@@ -3,7 +3,7 @@ import { makeDatabase } from '../../database.js';
 import { clean } from 'knex-cleaner';
 import { ValidationError } from 'objection';
 import { MatchModel } from '../MatchModel.js';
-import { MatchFactory } from '../../../_lib/factories/MatchFactory.js';
+import { MatchFactory } from '../../../testSupport/factories/MatchFactory.js';
 
 const database = makeDatabase();
 

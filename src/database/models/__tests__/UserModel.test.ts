@@ -1,9 +1,9 @@
 import { expect, describe, it, beforeEach, beforeAll, afterAll } from 'vitest'
 import { makeDatabase } from '../../database.js';
 import { clean } from 'knex-cleaner';
-import { UserFactory } from '../../../_lib/factories/UserFactory.js';
+import { UserFactory } from '../../../testSupport/factories/UserFactory.js';
 import { UserModel } from '../UserModel.js';
-import { TransactionFactory } from '../../../_lib/factories/TransactionFactory.js';
+import { TransactionFactory } from '../../../testSupport/factories/TransactionFactory.js';
 
 const database = makeDatabase();
 

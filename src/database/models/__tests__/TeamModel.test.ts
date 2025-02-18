@@ -2,7 +2,7 @@ import { expect, describe, it, beforeEach, beforeAll, afterAll } from 'vitest'
 import { makeDatabase } from '../../database.js';
 import { clean } from 'knex-cleaner';
 import { ValidationError } from 'objection';
-import { TeamFactory } from '../../../_lib/factories/TeamFactory.js';
+import { TeamFactory } from '../../../testSupport/factories/TeamFactory.js';
 import { TeamModel } from '../TeamModel.js';
 
 const database = makeDatabase();
