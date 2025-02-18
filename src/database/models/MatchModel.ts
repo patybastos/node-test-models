@@ -14,14 +14,14 @@ class MatchModel extends BaseModel {
   status!: string;
 
   tournamentId!: number;
-  tournament!: TournamentSchema;
+  tournament?: TournamentSchema;
 
   teamAId!: number;
-  teamA!: TeamSchema;
+  teamA?: TeamSchema;
   teamAScore!: number;
 
   teamBId!: number;
-  teamB!: TeamSchema;
+  teamB?: TeamSchema;
   teamBScore!: number;
 
   static get relationMappings(): RelationMappings {
@@ -62,7 +62,7 @@ class MatchModel extends BaseModel {
         },
       },
     };
-  }
+  };
 
   static jsonSchema: JSONSchema = {
     type: 'object',
@@ -71,19 +71,15 @@ class MatchModel extends BaseModel {
       id: { type: 'integer' },
       tournamentId: { type: 'integer' },
       teamAId: { type: 'integer' },
-      teamAScore: { type: 'integer' },
+      teamAScore: { type: 'integer', minimum: 0 },
       teamBId: { type: 'integer' },
-      teamBScore: { type: 'integer' },
+      teamBScore: { type: 'integer', minimum: 0 },
     },
   };
 
-  get isScheduled() {
+  isScheduled() {
     return this.status === 'scheduled';
-  }
-
-  get betsAllowed() {
-    return this.isScheduled /* && is on future */;
-  }
+  };
 }
 
 export { MatchModel };

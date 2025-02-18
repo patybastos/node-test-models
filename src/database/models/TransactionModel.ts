@@ -11,7 +11,7 @@ class TransactionModel extends BaseModel {
   kind!: string;
 
   userId!: number;
-  user!: UserSchema;
+  user?: UserSchema;
 
   betId?: number;
   bet?: BetSchema;
@@ -36,7 +36,7 @@ class TransactionModel extends BaseModel {
         },
       },
     };
-  }
+  };
 }
 
 export { TransactionModel };

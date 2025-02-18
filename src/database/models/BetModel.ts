@@ -12,10 +12,10 @@ class BetModel extends BaseModel {
   kind!: string;
 
   matchId!: number;
-  match!: MatchSchema;
+  match?: MatchSchema;
 
   userId!: number;
-  user!: UserSchema;
+  user?: UserSchema;
 
   static get relationMappings(): RelationMappings {
     return {
@@ -37,7 +37,7 @@ class BetModel extends BaseModel {
         },
       },
     };
-  }
+  };
 
   static jsonSchema: JSONSchema = {
     type: 'object',

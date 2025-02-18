@@ -1,6 +1,5 @@
 import { JSONSchema, ModelObject, RelationMappings } from 'objection';
 import { BaseModel } from './BaseModel.js';
-import { GroupModel } from './GroupModel.js';
 import { MatchModel } from './MatchModel.js';
 
 class TeamModel extends BaseModel {
@@ -10,23 +9,8 @@ class TeamModel extends BaseModel {
   name!: string;
   shortName!: string;
 
-  static PAGE_SIZE = 12;
-
   static get relationMappings(): RelationMappings {
     return {
-      groups: {
-        relation: BaseModel.ManyToManyRelation,
-        modelClass: GroupModel,
-        join: {
-          from: 'teams.id',
-          through: {
-            from: 'groupsTeams.teamId',
-            to: 'groupsTeams.groupsId',
-          },
-          to: 'groups.id',
-        },
-      },
-
       matchesAsA: {
         relation: BaseModel.HasManyRelation,
         modelClass: MatchModel,
@@ -45,7 +29,7 @@ class TeamModel extends BaseModel {
         },
       },
     };
-  }
+  };
 
   static jsonSchema: JSONSchema = {
     type: 'object',
@@ -56,10 +40,6 @@ class TeamModel extends BaseModel {
       shortName: { type: 'string', minLength: 3, maxLength: 3 },
     },
   };
-
-  static inPage(pageNumber = 1) {
-    return this.query().page(Math.max(0, pageNumber - 1), this.PAGE_SIZE);
-  }
 
   static withShortName(shortName: string) {
     return this.query().where({ shortName });

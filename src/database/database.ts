@@ -1,4 +1,5 @@
-import Knex from 'knex';
+// import Knex from 'knex';
+import Knex = require('knex'); // This is a workaround for the import statement
 import { config } from '../config.js';
 import { BaseModel } from './models/BaseModel.js';
 
@@ -20,6 +21,8 @@ const makeDatabase = () => {
       await knex.destroy();
       console.log('Database disconnected successfully.');
     },
+
+    connection() { return knex },
   };
 };
 

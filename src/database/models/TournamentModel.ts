@@ -1,6 +1,5 @@
 import { JSONSchema, ModelObject, RelationMappings } from 'objection';
 import { BaseModel } from './BaseModel.js';
-import { GroupModel, GroupSchema } from './GroupModel.js';
 import { MatchModel } from './MatchModel.js';
 
 class TournamentModel extends BaseModel {
@@ -11,19 +10,8 @@ class TournamentModel extends BaseModel {
   startsAt!: string;
   endsAt!: string;
 
-  groups!: GroupSchema[];
-
   static get relationMappings(): RelationMappings {
     return {
-      groups: {
-        relation: BaseModel.HasManyRelation,
-        modelClass: GroupModel,
-        join: {
-          from: 'tournaments.id',
-          to: 'groups.tournamentId',
-        },
-      },
-
       matches: {
         relation: BaseModel.HasManyRelation,
         modelClass: MatchModel,
@@ -33,7 +21,7 @@ class TournamentModel extends BaseModel {
         },
       },
     };
-  }
+  };
 
   static jsonSchema: JSONSchema = {
     type: 'object',

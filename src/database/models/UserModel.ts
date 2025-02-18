@@ -1,4 +1,4 @@
-import { ModelObject } from 'objection';
+import { JSONSchema, ModelObject } from 'objection';
 import { BaseModel } from './BaseModel.js';
 import { TransactionModel } from './TransactionModel.js';
 
@@ -8,7 +8,6 @@ class UserModel extends BaseModel {
   id!: number;
   email!: string;
   encryptedPassword!: string;
-  password!: string;
   role!: string;
 
   static get relationMappings() {
@@ -22,7 +21,28 @@ class UserModel extends BaseModel {
         },
       },
     };
-  }
+  };
+
+  static jsonSchema: JSONSchema = {
+    type: 'object',
+    required: ['email', 'role'],
+    properties: {
+      id: { type: 'integer' },
+      email: { type: 'string' },
+      password: { type: 'string' },
+      role: { type: 'string' },
+    },
+  };
+
+  async getBalance() {
+    const result = await this.$relatedQuery<TransactionModel & { sum: number }>('transactions')
+      .sum('amount')
+      .as('balance')
+      .first()
+      .throwIfNotFound();
+
+    return result.sum;
+  };
 }
 
 export { UserModel };

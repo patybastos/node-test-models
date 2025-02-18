@@ -1,7 +1,6 @@
 import { Knex } from 'knex';
 import { TeamModel } from '../models/TeamModel.js';
 import { TournamentModel } from '../models/TournamentModel.js';
-import { GroupModel } from '../models/GroupModel.js';
 import { MatchModel } from '../models/MatchModel.js';
 import { BaseModel } from '../models/BaseModel.js';
 import { UserModel } from '../models/UserModel.js';
@@ -35,43 +34,11 @@ export async function seed(knex: Knex): Promise<void> {
       endsAt: new Date(startDate.getTime() + 2 * 7 * 24 * 60 * 60 * 1000).toISOString(), // 2 weeks
     });
 
-    console.log('🌐 CREATING GROUPS');
-    const groups = await Promise.all(
-      teams
-        .reduce(
-          (acc, team) => {
-            if (acc[acc.length - 1].length === 4) {
-              acc.push([]);
-            }
-            acc[acc.length - 1].push(team);
-            return acc;
-          },
-          [[]] as TeamModel[][],
-        )
-        .map(async (teamsFromGroup, index) => {
-          const groupName = String.fromCharCode('A'.charCodeAt(0) + index);
-
-          const group = await GroupModel.query().insertGraphAndFetch(
-            {
-              name: `Group ${groupName}`,
-              tournamentId: tournament.id,
-              teams: teamsFromGroup,
-            },
-            { relate: true },
-          );
-
-          return group;
-        }),
-    );
-
     const locations = ['Campinho do Limoeiro', 'Campinho da Rua de Baixo'];
 
     console.log('🆚 CREATING MATCHES');
     await Promise.all(
-      groups
-        .flatMap((group) =>
-          group.teams.flatMap((teamA) => group.teams.filter((teamB) => teamA !== teamB).map((teamB) => [teamA, teamB])),
-        )
+        teams.flatMap((teamA) => teams.filter((teamB) => teamA !== teamB).map((teamB) => [teamA, teamB]))
         .map(async ([teamA, teamB], matchNumber) => {
           const matchTime = new Date(startDate);
           matchTime.setDate(matchTime.getDate() + Math.floor(matchNumber / 2));
